@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitSense Coach - Smart Fitness for Real People</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --dark: #0f172a;
+            --dark-light: #1e293b;
+            --gray: #64748b;
+            --light: #f8fafc;
+            --white: #ffffff;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: var(--dark);
+            color: var(--white);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .hero {
+            padding: 120px 0 80px;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(16, 185, 129, 0.1));
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.3), transparent);
+            top: -250px;
+            right: -250px;
+            border-radius: 50%;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--white), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--gray);
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--white);
+            padding: 1rem 2.5rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
+        }
+
+        .features {
+            padding: 80px 0;
+            background: var(--dark-light);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: var(--dark);
+            padding: 2rem;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s, border-color 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--white);
+        }
+
+        .feature-card p {
+            color: var(--gray);
+            line-height: 1.8;
+        }
+
+        .coach-demo {
+            padding: 80px 0;
+            background: var(--dark);
+        }
+
+        .demo-container {
+            background: var(--dark-light);
+            border-radius: 20px;
+            padding: 3rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .chat-interface {
+            background: var(--dark);
+            border-radius: 15px;
+            padding: 2rem;
+            max-width: 700px;
+            margin: 0 auto;
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            margin-bottom: 1.5rem;
+            max-height: 400px;
+        }
+
+        .message {
+            margin-bottom: 1rem;
+            padding: 1rem;
+            border-radius: 15px;
+            max-width: 80%;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message.user {
+            background: var(--primary);
+            margin-left: auto;
+            text-align: right;
+        }
+
+        .message.coach {
+            background: var(--dark-light);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .input-area {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .chat-input {
+            flex: 1;
+            background: var(--dark-light);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--white);
+            padding: 1rem;
+            border-radius: 50px;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .chat-input:focus {
+            border-color: var(--primary);
+        }
+
+        .send-button {
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .send-button:hover {
+            background: var(--primary-dark);
+        }
+
+        .readiness-section {
+            padding: 80px 0;
+            background: var(--dark-light);
+        }
+
+        .readiness-display {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .readiness-meter {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .meter-item {
+            flex: 1;
+            padding: 2rem;
+            border-radius: 20px;
+            border: 2px solid;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .meter-item:hover {
+            transform: scale(1.05);
+        }
+
+        .meter-item.green {
+            border-color: var(--secondary);
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .meter-item.yellow {
+            border-color: var(--warning);
+            background: rgba(245, 158, 11, 0.1);
+        }
+
+        .meter-item.red {
+            border-color: var(--danger);
+            background: rgba(239, 68, 68, 0.1);
+        }
+
+        .meter-item.active {
+            box-shadow: 0 0 30px currentColor;
+        }
+
+        .meter-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .meter-label {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .meter-desc {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .stats-section {
+            padding: 80px 0;
+            background: var(--dark);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .stat-card {
+            background: var(--dark-light);
+            padding: 2rem;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--gray);
+            font-size: 1rem;
+        }
+
+        footer {
+            background: var(--dark-light);
+            padding: 3rem 0;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        footer p {
+            color: var(--gray);
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            .nav-links {
+                display: none;
+            }
+            .readiness-meter {
+                flex-direction: column;
+            }
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .workout-card {
+            background: var(--dark-light);
+            padding: 2rem;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 2rem;
+        }
+
+        .workout-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .workout-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .workout-duration {
+            background: var(--primary);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+        }
+
+        .workout-exercises {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .exercise-item {
+            background: var(--dark);
+            padding: 1rem;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .exercise-name {
+            font-weight: 500;
+        }
+
+        .exercise-reps {
+            color: var(--gray);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">FitSense Coach</div>
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#coach">Try Coach</a></li>
+                <li><a href="#readiness">Body Readiness</a></li>
+                <li><a href="#stats">Stats</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Smart Fitness for Real People</h1>
+            <p>Your AI-powered personal fitness trainer that adapts to your body, mood, and lifestyle. No extremes. No guilt. Just sustainable progress.</p>
+            <button class="cta-button" onclick="scrollToCoach()">Start Your Journey</button>
+        </div>
+    </section>
+
+    <section id="features" class="features">
+        <div class="container">
+            <h2 class="section-title">Core Features</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3>Body Readiness Intelligence</h3>
+                    <p>AI analyzes your sleep, mood, soreness, and recent activity to determine if you should train hard, go light, or rest. No more guessing.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💪</div>
+                    <h3>Daily Workout Generation</h3>
+                    <p>Get personalized 5-25 minute workouts designed for your current state. Bodyweight-focused, equipment-free, and adaptable to any space.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🧠</div>
+                    <h3>Behavior Pattern Analysis</h3>
+                    <p>Track consistency patterns, identify what works for you, and get insights on sleep, energy, and motivation trends over time.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💬</div>
+                    <h3>Conversational Coach</h3>
+                    <p>Talk to your coach naturally. Ask questions, share struggles, get honest feedback. No judgment, just support.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🛡️</div>
+                    <h3>Teen-Safe & Ethical</h3>
+                    <p>Designed for ages 13+. No extreme methods, no body shaming, no dangerous advice. Focus on health, not obsession.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Smart Progress Tracking</h3>
+                    <p>Monitor consistency, energy levels, sleep quality, and movement. See what truly matters for long-term success.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="coach" class="coach-demo">
+        <div class="container">
+            <h2 class="section-title">Talk to Your Coach</h2>
+            <div class="demo-container">
+                <div class="chat-interface">
+                    <div class="chat-messages" id="chatMessages">
+                        <div class="message coach">
+                            <p>Hey! I'm your FitSense Coach. I'm here to help you build sustainable fitness habits. How are you feeling today?</p>
+                        </div>
+                    </div>
+                    <div class="input-area">
+                        <input type="text" class="chat-input" id="chatInput" placeholder="Type your message..." onkeypress="handleKeyPress(event)">
+                        <button class="send-button" onclick="sendMessage()">Send</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="readiness" class="readiness-section">
+        <div class="container">
+            <h2 class="section-title">Body Readiness System</h2>
+            <div class="readiness-display">
+                <p style="color: var(--gray); margin-bottom: 2rem;">Based on your sleep, mood, soreness, and recent activity, we determine your optimal training intensity for today.</p>
+                <div class="readiness-meter">
+                    <div class="meter-item green" onclick="showReadinessInfo('green')">
+                        <div class="meter-icon">🟢</div>
+                        <div class="meter-label">GREEN</div>
+                        <div class="meter-desc">Ready to Train</div>
+                    </div>
+                    <div class="meter-item yellow" onclick="showReadinessInfo('yellow')">
+                        <div class="meter-icon">🟡</div>
+                        <div class="meter-label">YELLOW</div>
+                        <div class="meter-desc">Light Movement</div>
+                    </div>
+                    <div class="meter-item red" onclick="showReadinessInfo('red')">
+                        <div class="meter-icon">🔴</div>
+                        <div class="meter-label">RED</div>
+                        <div class="meter-desc">Recovery Day</div>
+                    </div>
+                </div>
+                <div id="readinessInfo" style="margin-top: 2rem; padding: 2rem; background: var(--dark); border-radius: 15px; display: none;">
+                    <h3 id="readinessTitle" style="margin-bottom: 1rem;"></h3>
+                    <p id="readinessText" style="color: var(--gray);"></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="stats" class="stats-section">
+        <div class="container">
+            <h2 class="section-title">Track What Matters</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="streakCount">0</div>
+                    <div class="stat-label">Day Streak</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="workoutCount">0</div>
+                    <div class="stat-label">Workouts Completed</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="sleepAvg">0h</div>
+                    <div class="stat-label">Avg Sleep</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="energyLevel">0%</div>
+                    <div class="stat-label">Energy Level</div>
+                </div>
+            </div>
+            
+            <div class="workout-card" style="margin-top: 3rem;">
+                <div class="workout-header">
+                    <div class="workout-title">Today's Recommended Workout</div>
+                    <div class="workout-duration">15 min</div>
+                </div>
+                <div class="workout-exercises">
+                    <div class="exercise-item">
+                        <span class="exercise-name">Push-ups</span>
+                        <span class="exercise-reps">3 sets × 10 reps</span>
+                    </div>
+                    <div class="exercise-item">
+                        <span class="exercise-name">Bodyweight Squats</span>
+                        <span class="exercise-reps">3 sets × 15 reps</span>
+                    </div>
+                    <div class="exercise-item">
+                        <span class="exercise-name">Plank Hold</span>
+                        <span class="exercise-reps">3 sets × 30 sec</span>
+                    </div>
+                    <div class="exercise-item">
+                        <span class="exercise-name">Jumping Jacks</span>
+                        <span class="exercise-reps">2 sets × 20 reps</span>
+                    </div>
+                </div>
+                <button class="cta-button" style="margin-top: 1.5rem; width: 100%;" onclick="startWorkout()">Start Workout</button>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 FitSense Coach. Smart Fitness for Real People.</p>
+            <p style="margin-top: 0.5rem; font-size: 0.9rem;">Built with care for sustainable health and wellness.</p>
+        </div>
+    </footer>
+
+    <script>
+        const responses = {
+            greetings: ["Great to hear from you! What's on your mind today?", "Hey! How can I help you with your fitness journey?", "Welcome back! Ready to talk about your goals?"],
+            tired: ["Feeling tired is your body's way of asking for rest. That's not weakness—that's wisdom. How about a light walk or some gentle stretching today?", "Low energy days are normal. Let's focus on recovery. Have you been sleeping well?", "It's okay to feel tired. Rest is progress too. Want to talk about what might be affecting your energy?"],
+            motivation: ["Motivation comes and goes. What matters is showing up, even in small ways. What's one tiny thing you can do today?", "You don't need to feel motivated to take action. Start with 5 minutes. That's all.", "Consistency beats motivation every time. Let's focus on what you can control today."],
+            workout: ["Based on how you're feeling, I'd recommend a 15-minute bodyweight session. Want me to create one for you?", "Let's design something that fits your current energy level. Tell me—how's your body feeling today?", "I can suggest a workout, but first—did you sleep well? How's your energy?"],
+            default: ["I'm here to help. Can you tell me more about what you're experiencing?", "That's a great question. Let's work through this together.", "I want to give you the best advice. Can you share a bit more detail?"]
+        };
+
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            if (!message) return;
+            addMessage(message, 'user');
+            input.value = '';
+            setTimeout(() => {
+                const response = generateResponse(message.toLowerCase());
+                addMessage(response, 'coach');
+            }, 1000);
+        }
+
+        function addMessage(text, sender) {
+            const messagesDiv = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+            messageDiv.innerHTML = `<p>${text}</p>`;
+            messagesDiv.appendChild(messageDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        function generateResponse(message) {
+            if (message.includes('tired') || message.includes('exhausted') || message.includes('sleepy')) {
+                return responses.tired[Math.floor(Math.random() * responses.tired.length)];
+            } else if (message.includes('motivat') || message.includes('lazy') || message.includes('dont want')) {
+                return responses.motivation[Math.floor(Math.random() * responses.motivation.length)];
+            } else if (message.includes('workout') || message.includes('exercise') || message.includes('train')) {
+                return responses.workout[Math.floor(Math.random() * responses.workout.length)];
+            } else if (message.includes('hi') || message.includes('hello') || message.includes('hey')) {
+                return responses.greetings[Math.floor(Math.random() * responses.greetings.length)];
+            } else {
+                return responses.default[Math.floor(Math.random() * responses.default.length)];
+            }
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') sendMessage();
+        }
+
+        function scrollToCoach() {
+            document.getElementById('coach').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function showReadinessInfo(level) {
+            const info = {
+                green: { title: "GREEN - Ready to Train", text: "Your body is well-rested and ready for a full workout. You slept well, energy is high, and soreness is minimal. This is the perfect time for strength training, cardio, or skill work. Listen to your body during the session and maintain good form." },
+                yellow: { title: "YELLOW - Light Movement", text: "Your body needs a lighter approach today. Maybe sleep wasn't perfect, or you're feeling some fatigue. Focus on mobility work, walking, yoga, or a very light workout. This isn't a rest day, but it's not time to push hard either." },
+                red: { title: "RED - Recovery Day", text: "Your body is asking for rest. Poor sleep, high soreness, or low energy means recovery is your workout today. Take a walk if you feel like it, do some stretching, or simply rest. This is progress, not laziness. Tomorrow you'll be stronger." }
+            };
+            document.getElementById('readinessTitle').textContent = info[level].title;
+            document.getElementById('readinessText').textContent = info[level].text;
+            document.getElementById('readinessInfo').style.display = 'block';
+            document.querySelectorAll('.meter-item').forEach(item => item.classList.remove('active'));
+            event.target.closest('.meter-item').classList.add('active');
+        }
+
+        function animateStats() {
+            animateValue('streakCount', 0, 7, 2000);
+            animateValue('workoutCount', 0, 23, 2000);
+            animateValue('energyLevel', 0, 78, 2000, '%');
+            setTimeout(() => { document.getElementById('sleepAvg').textContent = '7.2h'; }, 1000);
+        }
+
+        function animateValue(id, start, end, duration, suffix = '') {
+            const element = document.getElementById(id);
+            const range = end - start;
+            const increment = range / (duration / 16);
+            let current = start;
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= end) {
+                    current = end;
+                    clearInterval(timer);
+                }
+                element.textContent = Math.floor(current) + suffix;
+            }, 16);
+        }
+
+        function startWorkout() {
+            alert('Great! Let\'s begin your workout. Remember:\n\n✓ Focus on form over speed\n✓ Breathe steadily\n✓ Listen to your body\n✓ Take breaks when needed\n\nYou\'ve got this!');
+        }
+
+        window.addEventListener('load', () => { animateStats(); });
+    </script>
+</body>
+</html>
